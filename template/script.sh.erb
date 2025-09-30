@@ -9,10 +9,6 @@ cd "${HOME}"
 # Clear any existing XDG_RUNTIME_DIR to avoid warnings from dconf
 unset XDG_RUNTIME_DIR
 
-#
-# Start Jupyter Notebook Server
-#
-
 <%- unless context.modules.blank? -%>
 # Purge the module environment to avoid conflicts
 module purge
@@ -25,9 +21,9 @@ module list
 <%- end -%>
 
 # Benchmark info
-echo "TIMING - Starting jupyter at: $(date)"
+echo "TIMING - Starting QuPath at: $(date)"
 
-# Launch the Jupyter Notebook Server
+# Launch QuPath using xpra
 set -x
 apptainer exec ${CONTAINER} xpra start \
     --minimal=yes \
