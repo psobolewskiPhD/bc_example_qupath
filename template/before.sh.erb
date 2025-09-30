@@ -31,31 +31,26 @@
 
 # Find available port to run server on
 port=$(find_port)
+export PORT="${port}"
 
 # Generate SHA1 encrypted password (requires OpenSSL installed)
 SALT="$(create_passwd 16)"
 password="$(create_passwd 16)"
 PASSWORD_SHA1="$(echo -n "${password}${SALT}" | openssl dgst -sha1 | awk '{print $NF}')"
 
+
 # The `$CONFIG_FILE` environment variable is exported as it is used in the main
 # `script.sh.erb` file when launching the Jupyter Notebook server.
-export CONFIG_FILE="${PWD}/config.py"
+#export CONFIG_FILE="${PWD}/config.py"
+
+# Save the PASSWORD to a file
+export PASSWORD_FILE="${PWD}/password.txt"
 
 # define container location
-export CONTAINER="${HOME}/bin/jupyter_min_20250922.sif"
+export CONTAINER="${HOME}/bin/qupath_xpra.sif"
 
-# Generate Jupyter configuration file with secure file permissions
+# Generate password file with secure file permissions
 (
 umask 077
-cat > "${CONFIG_FILE}" << EOL
-c.ServerApp.ip = '*'
-c.ServerApp.port = ${port}
-c.ServerApp.port_retries = 0
-c.ServerApp.password = u'sha1:${SALT}:${PASSWORD_SHA1}'
-c.ServerApp.base_url = '/node/${host}/${port}/'
-c.ServerApp.open_browser = False
-c.ServerApp.allow_origin = '*'
-c.ServerApp.notebook_dir = '${HOME}'
-c.ServerApp.disable_check_xsrf = True
-EOL
+echo -n "${password}" > ${PASSWORD_FILE}
 )
