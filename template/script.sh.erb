@@ -33,7 +33,7 @@ apptainer exec ${CONTAINER} xpra start \
     --opengl=yes \
     --html=on \
     --compression-level=1 \
-    --start="/QuPath/bin/QuPath" \
+    --start="/QuPath/bin/QuPath -Dqupath.prefs.name=myPrefs" \
     --exit-with-windows=yes \
     --daemon=no \
     --clipboard=yes \
