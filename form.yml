@@ -48,7 +48,7 @@ attributes:
     label: "Number of cores"
     value: 1
     help: |
-      Currently, we limit the maximum number of cores for a Jupyter job to 16.
+      Currently, we limit the maximum number of cores for a QuPath job to 16.
     min: 1
     max: 16
     step: 1
@@ -58,7 +58,7 @@ attributes:
     min: 1
     max: 8
     step: 1
-    help: "The interactive Jupyter server is intended for a work day's amount of time."
+    help: "The interactive QuPath server is intended for a work day's amount of time."
   memtask:
     widget: select
     label: "Memory (in GB)"
@@ -72,7 +72,7 @@ attributes:
 
   # Any extra command line arguments to feed to the `jupyter notebook ...`
   # command that launches the Jupyter notebook within the batch job
-  extra_jupyter_args: ""
+  #extra_jupyter_args: ""
 
 # All of the attributes that make up the Dashboard form (in respective order),
 # and made available to the submit configuration file and the template ERB
@@ -85,11 +85,9 @@ attributes:
 #   Dashboard
 form:
   - modules
-  - extra_jupyter_args
   - auto_queues
   - custom_qos
   - num_cores
   - bc_num_hours
-  - bc_num_tasks
   - bc_email_on_started
   - memtask
