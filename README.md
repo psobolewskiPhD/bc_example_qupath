@@ -1,10 +1,13 @@
-# Batch Connect - Example Jupyter Notebook Server
+# Batch Connect - Example using containerized Xpra app (QuPath)
 
-![GitHub Release](https://img.shields.io/github/release/osc/bc_example_jupyter.svg)
-![GitHub License](https://img.shields.io/github/license/osc/bc_example_jupyter.svg)
+This is a template repo and example adapted from:
+https://github.com/OSC/bc_example_jupyter
 
-An example Batch Connect app that launches a Jupyter Notebook server within a
-batch job.
+The goal is to make it easy to access containerized applications that use [Xpra](https://github.com/Xpra-org/xpra/) (specifically [the web client](https://github.com/Xpra-org/xpra-html5)) for GUI access.
+
+The idea is that in this template repository, in [template/before.sh.erb](https://github.com/psobolewskiPhD/bc_example_qupath/blob/main/template/before.sh.erb) the port, password, and DISPLAY are already set up for a minimal Xpra session. 
+So to implement an app, only [the container path](https://github.com/psobolewskiPhD/bc_example_qupath/blob/be88adf8636531c6078c783e7b55d85512c82830/template/before.sh.erb#L54) needs to be modified, as well as the [actual start executable](https://github.com/psobolewskiPhD/bc_example_qupath/blob/be88adf8636531c6078c783e7b55d85512c82830/template/script.sh.erb#L36). Beyond that, you can update the icon.png to for the app, as well as [view.html.erb](https://github.com/psobolewskiPhD/bc_example_qupath/blob/main/view.html.erb) which defines the connect button.
+In terms of the SLURM parameters and the submission form, a minimal set is already provided in [form.yml](https://github.com/psobolewskiPhD/bc_example_qupath/blob/main/form.yml), but you can edit that along side [submit.yml.erb](https://github.com/psobolewskiPhD/bc_example_qupath/blob/main/submit.yml.erb).
 
 ## Prerequisites
 
@@ -12,64 +15,17 @@ This Batch Connect app requires the following software be installed on the
 **compute nodes** that the batch job is intended to run on (**NOT** the
 OnDemand node):
 
-- [Jupyter Notebook](http://jupyter.readthedocs.io/en/latest/) 4.2.3+ (earlier
-  versions are untested but may work for you)
-- [OpenSSL](https://www.openssl.org/) 1.0.1+ (used to hash the Jupyter Notebook
-  server password)
-
-**Optional** software:
-
-- [Lmod](https://www.tacc.utexas.edu/research-development/tacc-projects/lmod)
-  6.0.1+ or any other `module purge` and `module load <modules>` based CLI
-  used to load appropriate environments within the batch job before launching
-  the Jupyter Notebook server.
+- [OpenSSL](https://www.openssl.org/) 1.0.1+ (used to hash the password, but this is not required)
+- apptainer/singularity (as a module)
 
 ## Install
 
-These are command line only installation directions.
+Click the `Use this template` button and create a new repository from this template repository using the GitHub interface.
 
-We start by downloading a zipped package of this code. This allows us to start
-with a fresh directory that has no git history as we will be building off of
-this.
+Clone your new repository to your sandbox environment (`~/ondemand/dev`).
 
-```sh
-# Download the zip from the GitHub page
-wget https://github.com/OSC/bc_example_jupyter/archive/master.tar.gz
+Place your container with the application and xpra in a location accessible to your user (for development) and update [the container path](https://github.com/psobolewskiPhD/bc_example_qupath/blob/be88adf8636531c6078c783e7b55d85512c82830/template/before.sh.erb#L54). For making public, move the container to a globally accessible location and update the path. in  or all users (`/cm/shared`).
 
-# Create a catchy directory
-mkdir my_jupyter_app
+## Make your changes
 
-# Unzip the downloaded file into this directory
-tar xzvf master.tar.gz -C my_jupyter_app --strip-components=1
-
-# Change the working directory to this new directory
-cd my_jupyter_app
-```
-
-From here you will make any modifications to the code that you would like and
-version your changes in your own repository:
-
-```sh
-# Version our app by making a new Git repository
-git init
-
-#
-# Make all your code changes while testing them in the OnDemand Dashboard
-#
-# ...
-#
-
-# Add the files to the Git repository
-git add --all
-
-# Commit the staged files to the Git repository
-git commit -m "my first commit"
-```
-
-## Contributing
-
-1. Fork it ( https://github.com/OSC/bc_example_jupyter/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+You can edit the files directly in your sandbox environment or have a local clone for development and push/pull to sync changes to the sandbox. Note that the dev OpenOnDemand will use whatever branch you have checked out in the sandbox repository, so you can easily test different changes by working in branches.
