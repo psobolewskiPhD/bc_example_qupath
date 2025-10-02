@@ -25,7 +25,7 @@ Click the `Use this template` button and create a new repository from this templ
 
 Clone your new repository to your sandbox environment (`~/ondemand/dev`).
 
-Place your container with the application and xpra in a location accessible to your user (for development) and update [the container path](https://github.com/psobolewskiPhD/bc_example_qupath/blob/be88adf8636531c6078c783e7b55d85512c82830/template/before.sh.erb#L54). For making public, move the container to a globally accessible location and update the path. in  or all users (`/cm/shared`).
+Place your container with the application and xpra in a location accessible to your user (for development) and update [the container path](https://github.com/psobolewskiPhD/bc_example_qupath/blob/be88adf8636531c6078c783e7b55d85512c82830/template/before.sh.erb#L54). For making public, move the container to a globally accessible location (`/cm/shared`) and update the path accordingly.
 
 ## Make your changes
 
