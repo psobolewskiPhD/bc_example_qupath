@@ -26,31 +26,27 @@ attributes:
   # @example Using combination of modules
   #     modules: "python/3.5 cuda/8.0.44"
   modules: "apptainer"
-  auto_queues:
+  partition:
     label: "Partition"
+    widget: select
+    options:
+      - ['compute']
   custom_qos:
     label: "QOS"
     widget: select
     options:
       - ['batch', data-exclusive-option-for-queue-compute: true]
-      - ['test', data-exclusive-option-for-queue-rit-test: true]
-  bc_num_hours:
-    label: "Number of hours"
-    required: true
-    widget: "number_field"
-    value: 1
-    min: 1
-    max: 8
-    step: 1
-    id: 'bc_num_hours'
+      # - ['test', data-exclusive-option-for-queue-rit-test: true]
+    help: |
+      Currently, QuPath jobs are limited to the compute partition and batch QOS.
   num_cores:
     widget: "number_field"
     label: "Number of cores"
-    value: 1
+    value: 8
     help: |
-      Currently, we limit the maximum number of cores for a QuPath job to 16.
-    min: 1
-    max: 16
+      Currently, we limit the maximum number of cores for a QuPath jobs to 64.
+    min: 2
+    max: 64
     step: 1
   bc_num_hours:
     label: "Number of hours"
@@ -63,12 +59,10 @@ attributes:
     widget: select
     label: "Memory (in GB)"
     options:
-      - ["8GB"]
-      - ["16GB"]
-      - ["24GB"]
       - ["32GB"]
-      - ["40GB"]
-      - ["48GB"]  
+      - ["48GB"]
+      - ["64GB"]
+      - ["96GB"]  
 
   # Any extra command line arguments to feed to the `jupyter notebook ...`
   # command that launches the Jupyter notebook within the batch job
@@ -85,9 +79,9 @@ attributes:
 #   Dashboard
 form:
   - modules
-  - auto_queues
+  - partition
   - custom_qos
   - num_cores
+  - memtask
   - bc_num_hours
   - bc_email_on_started
-  - memtask
